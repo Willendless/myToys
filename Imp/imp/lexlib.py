@@ -1,8 +1,9 @@
 '''
 @Author: Willendless
-@Date: 2020-06-08 14:03:31
-@Description: lex library
-@FilePath: \Imp\imp\lex.py
+@Date: 2020-06-08
+@Description: Do not edit
+@LastEditTime: 2020-06-09
+@FilePath: \Imp\imp\lexlib.py
 '''
 import sys
 import re

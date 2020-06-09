@@ -1,7 +1,8 @@
 '''
 @Author: Willendless
-@Date: 2020-06-08 14:49:44
-@Description: lexer implementation
+@Date: 2020-06-08
+@Description: Do not edit
+@LastEditTime: 2020-06-09
 @FilePath: \Imp\imp\lexer.py
 '''
 
