@@ -1,12 +1,12 @@
 '''
 @Author: Willendless
 @Date: 2020-06-08
-@Description: Do not edit
-@LastEditTime: 2020-06-09
+@Description: lexer implementation
+@LastEditTime: 2020-06-10
 @FilePath: \Imp\imp\lexer.py
 '''
 
-from .lex import lex
+from .lexlib import lex
 import sys
 
 # token class

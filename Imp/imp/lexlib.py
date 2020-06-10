@@ -1,7 +1,7 @@
 '''
 @Author: Willendless
 @Date: 2020-06-08
-@Description: Do not edit
+@Description: lex library implementation
 @LastEditTime: 2020-06-09
 @FilePath: \Imp\imp\lexlib.py
 '''
