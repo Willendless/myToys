@@ -2,7 +2,7 @@
 @Author: Willendless
 @Date: 2020-06-09
 @Description: parser implementation
-@LastEditTime: 2020-06-10
+@LastEditTime: 2020-06-11
 @FilePath: \Imp\imp\parser.py
 '''
 
@@ -21,25 +21,52 @@ class ArithExp(Equality):
     """base class of arithmetic expression"""
 
 class ArithInt(ArithExp):
+    """ast for int literal"""
     def __init__(self, i):
         self.i = i
+
+    def eval(self, env):
+        return self.i
     
     def __repr__(self):
         return 'ArithInt(%d)' % self.i
 
 class ArithVal(ArithExp):
-    def __init__(self, value):
-        self.value = value
+    """ast for identifier"""
+    def __init__(self, name):
+        self.name = name
+    
+    def eval(self, env):
+        if self.name in env:
+            return env[self.name]
+        else:
+            return 0    # TODO: not elegant
 
     def __repr__(self):
-        return 'ArithVal(%s)' % self.value
+        return 'ArithVal(%s)' % self.name
 
 class ArithBinExp(ArithExp):
+    """ast for binary operator expression"""
     def __init__(self, op, left, right):
         self.op = op
         self.left = left
         self.right = right
     
+    def eval(self, env):
+        l = self.left.eval(env)
+        r = self.right.eval(env)
+        if self.op == '+':
+            ret = l + r
+        elif self.op == '-':
+            ret = l - r
+        elif self.op == '*':
+            ret = l * r
+        elif self.op == '/':
+            ret = l / r
+        else:
+            raise RuntimeError('unknown operator: ' + self.op)
+        return ret
+
     def __repr__(self):
         return 'ArithBinExp(%s, %s, %s)' % (self.op, self.left, self.right)
 
@@ -53,6 +80,25 @@ class BoolRelExp(BoolExp):
         self.left = left
         self.right = right
     
+    def eval(self, env):
+        l = self.left.eval(env)
+        r = self.right.eval(env)
+        if self.op == '>':
+            ret = l > r
+        elif self.op == '>=':
+            ret = l >= r
+        elif self.op == '<':
+            ret = l < r
+        elif self.op == '<=':
+            ret = l <= r
+        elif self.op == '=':
+            ret = l == r
+        elif self.op == '!=':
+            ret = l != r
+        else:
+            raise RuntimeError('unkown operator: ' + self.op)
+        return ret
+
     def __repr__(self):
         return 'BoolRelExp(%s, %s, %s)' % (self.op, self.left, self.right)
 
@@ -61,6 +107,11 @@ class BoolAndExp(BoolExp):
         self.left = left
         self.right = right
     
+    def eval(self, env):
+        l = self.left.eval(env)
+        r = self.right.eval(env)
+        return l and r
+
     def __repr__(self):
         return 'BoolAndExp(%s, %s)' % (self.left, self.right)
 
@@ -69,6 +120,11 @@ class BoolOrExp(BoolExp):
         self.left = left
         self.right = right
     
+    def eval(self, env):
+        l = self.left.eval(env)
+        r = self.right.eval(env)
+        return l or r
+
     def __repr__(self):
         return 'BoolOrExp(%s, %s)' % (self.left, self.right)
 
@@ -76,6 +132,9 @@ class BoolNotExp(BoolExp):
     def __init__(self, exp):
         self.exp = exp
     
+    def eval(self, env):
+        return not self.exp.eval(env)
+
     def __repr__(self):
         return 'BoolNotExp(%s)' % (self.exp)
 
@@ -85,18 +144,26 @@ class Statement(Equality):
     pass
 
 class StatementAssign(Statement):
-    def __init__(self, var, expr):
-        self.var = var
+    def __init__(self, name, expr):
+        self.name = name
         self.expr = expr
 
+    def eval(self, env):
+        val = self.expr.eval(env)
+        env[self.name] = val
+
     def __repr__(self):
-        return 'StatementAssign(%s, %s)' % (self.var, self.expr)
+        return 'StatementAssign(%s, %s)' % (self.name, self.expr)
 
 class StatementCompound(Statement):
     def __init__(self, first, second):
         self.first = first
         self.second = second
     
+    def eval(self, env):
+        self.first.eval(env)
+        self.second.eval(env)
+
     def __repr__(self):
         return 'StatementCompound(%s, %s)' % (self.first, self.second)
 
@@ -106,6 +173,14 @@ class StatementIf(Statement):
         self.true_statement = true_statement
         self.false_statement = false_statement
     
+    def eval(self, env):
+        cond = self.condition.eval(env)
+        if cond:
+            self.true_statement.eval(env)
+        else:
+            if self.false_statement:
+                self.false_statement.eval(env)
+
     def __repr__(self):
         return 'StatementIf(%s, %s, %s)' % (self.condition, self.true_statement, self.false_statement)
 
@@ -113,6 +188,10 @@ class StatementWhile(Statement):
     def __init__(self, condition, body_statement):
         self.condition = condition
         self.body_statement = body_statement
+
+    def eval(self, env):
+        while self.condition.eval(env):
+            self.body_statement.eval(env)
 
     def __repr__(self):
         return 'StatementWhile(%s, %s)' % (self.condition, self.body_statement)
