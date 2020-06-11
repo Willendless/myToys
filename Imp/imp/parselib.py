@@ -2,7 +2,7 @@
 @Author: Willendless
 @Date: 2020-06-08
 @Description: parse library implementation
-@LastEditTime: 2020-06-10
+@LastEditTime: 2020-06-11
 @FilePath: \Imp\imp\parselib.py
 '''
 
@@ -143,7 +143,7 @@ class Lazy(Parser):
 
     def __call__(self, tokens, pos):
         if self.parser is None:
-            self.parser = parser_gen()
+            self.parser = self.parser_gen()
         return self.parser(tokens, pos)
 
 
