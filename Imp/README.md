@@ -6,6 +6,9 @@ Token stream--1--intermediate Result object--2--AST
 
 ## TODO
 
+- [X] global variable
+- [X] basic evaluator support 
+- [X] boolean, if-else and while expression
 - [ ] Make variables local to the scope they are defined in
 - [ ] Add for-loop construct
 - [ ] Add scan and print statements for user input and output
