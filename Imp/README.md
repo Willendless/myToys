@@ -47,13 +47,13 @@ y := 2
   + ***implementation:*** subclass of `parser` with own state and `__call__()` overrided
   + classes
     + Reserved combinator
-    + Tag combinator
+    + TokenClass combinator
     + Concat combinator
     + Alternate combinator
     + Opt combinator
-    + Rep combinator
     + Process combinator
     + Exp combinator
+    + Phrase combinator
 
 ## AST defination
 
