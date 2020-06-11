@@ -2,7 +2,7 @@
 @Author: Willendless
 @Date: 2020-06-08
 @Description: lex library implementation
-@LastEditTime: 2020-06-09
+@LastEditTime: 2020-06-11
 @FilePath: \Imp\imp\lexlib.py
 '''
 import sys
@@ -19,7 +19,7 @@ def lex(text, token_exprs):
         text: input source imp file
         token_exprs: (regex pattern, token class) high priority first
     Returns:
-        tokens: list of tokens (token class, lexeme)
+        tokens: list of tokens (lexeme, token_class)
     """
     pos = 0
     tokens = []
@@ -32,7 +32,7 @@ def lex(text, token_exprs):
             match = regex.match(text, pos)
             if match:
                 if token_class:
-                    token = (token_class, match.group(0))
+                    token = (match.group(0), token_class)
                     tokens.append(token)
                 break
         if not match:
