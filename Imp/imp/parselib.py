@@ -58,7 +58,7 @@ class Reserved(Parser):
             return None
 
 class TokenClass(Parser):
-    """parse token_class ID and INT
+    """parse token_class(tag) ID and INT
     
         only token_class should match
         otherwise return None
@@ -124,7 +124,7 @@ class Process(Parser):
     def __call__(self, tokens, pos):
         result = self.parser(tokens, pos)
         if result:
-            result.value = process_func(result.value)
+            result.value = self.process_func(result.value)
             return result
         else:
             return None
