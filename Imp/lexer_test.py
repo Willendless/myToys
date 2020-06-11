@@ -8,10 +8,12 @@ import imp.lexer
 import sys
 
 if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        sys.stderr.write('usage: %s input_filename' % sys.argv[0])
+        sys.exit(1)
     filename = sys.argv[1]
-    file = open(filename)
-    text = file.read()
-    file.close()
+    with open(filename, 'r') as f:
+        text = f.read()
     tokens = imp.lexer.imp_lexer(text)
     for token in tokens:
         print(token)
