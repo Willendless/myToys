@@ -4,6 +4,13 @@ A toy interpreter wrote for a basic imperative language called IMP based on [blo
 
 Token stream--1--intermediate Result object--2--AST
 
+## TODO
+
+- [ ] Make variables local to the scope they are defined in
+- [ ] Add for-loop construct
+- [ ] Add scan and print statements for user input and output
+- [ ] Add functions support
+
 ## IMP syntax
 
 ```python
@@ -73,3 +80,21 @@ Every syntactic element of IMP will have a corresponding class. Object of them r
     + compound statements
     + conditional statements
     + loop statements
+
+## Evaluator
+
+1. *point of control:* root of ast tree
+2. *environment:* dictionary
+3. *evaluation function:* embedded in each ast component class
+
+## execution example
+
+```shell
+# cd into same directory as interpreter.py
+python3 interpreter.py tests/top_test1.imp
+
+# output
+$ Final variables values:
+$ n: 0
+$ p: 120
+```
