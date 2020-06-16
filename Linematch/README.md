@@ -6,7 +6,6 @@
     + expr -> token -> AST -> SearchTarget
 2. input search file path
 3. try match each line in file
-4. output stat info
 
 ## expression grammar
 
@@ -15,15 +14,23 @@
 + Binary expressions: *&&*, *||*
 + Parentheses for grouping
 
-```scala
+```python
+# first version with ambiguity
 expression -> literal
             | unary
             | binary
             | grouping;
-
 literal    -> WORD;
 grouping   -> "(" expression ")";
 unary      -> "!" expression;
 binary     -> expression operator expression
 operator   -> "&&" | "||"
+
+# second version without ambiguity
+expression -> or
+or         -> and ("||" and)*
+and        -> primary ("&&" primary)*
+primary    -> WORD
+            | "(" expression ")"
+            | "!" WORD
 ```
