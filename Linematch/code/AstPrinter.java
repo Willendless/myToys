@@ -2,7 +2,7 @@
  * @Author: Willendless
  * @Date: 2020-06-15
  * @Description: Helper class for Ast print
- * @LastEditTime: 2020-06-15
+ * @LastEditTime: 2020-06-16
  * @FilePath: \code\AstPrinter.java
  */
 package code;
@@ -40,7 +40,7 @@ public class AstPrinter implements Expr.Visitor<String> {
 
     @Override
     public String visitUnary(Unary unary) {
-        return parenthesize(unary.operator.getValue(), unary.expression);
+        return parenthesize(unary.operator.getValue(), unary.literal);
     }
 
     @Override

@@ -2,7 +2,7 @@
  * @Author: Willendless
  * @Date: 2020-06-15
  * @Description: Expr class
- * @LastEditTime: 2020-06-15
+ * @LastEditTime: 2020-06-16
  * @FilePath: \code\Expr.java
  */
 package code;
@@ -33,11 +33,11 @@ public abstract class Expr {
 
     public static class Unary extends Expr {
         Token operator;
-        Expr expression;
+        Literal literal;
 
-        public Unary(Token operator, Expr expression) {
+        public Unary(Token operator, Literal literal) {
             this.operator = operator;
-            this.expression = expression;
+            this.literal = literal;
         }
 
         @Override
