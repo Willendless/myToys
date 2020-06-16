@@ -1,3 +1,10 @@
+/**
+ * @Author: Willendless
+ * @Date: 2020-06-14
+ * @Description: LineMatch Exception
+ * @LastEditTime: 2020-06-15
+ * @FilePath: \code\LineMatchException.java
+ */
 package code;
 
 public class LineMatchException extends RuntimeException {
