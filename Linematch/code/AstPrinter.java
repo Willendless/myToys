@@ -16,8 +16,8 @@ import code.Token.TokenType;
 
 public class AstPrinter implements Expr.Visitor<String> {
 
-    public String print(Expr expr) {
-        return expr.accept(this);
+    public void print(Expr expr) {
+        System.out.println(expr.accept(this));
     }
 
     private String parenthesize(String name, Expr... exprs) {
@@ -35,7 +35,7 @@ public class AstPrinter implements Expr.Visitor<String> {
 
     @Override
     public String visitLiteral(Literal literal) {
-        return literal.value.toString();
+        return literal.word;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class AstPrinter implements Expr.Visitor<String> {
             new Grouping(
                 new Literal("aaaa")
             ));
-        System.out.println(new AstPrinter().print(test));
+        new AstPrinter().print(test);
     }
     
 }

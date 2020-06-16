@@ -19,10 +19,10 @@ public abstract class Expr {
     }
 
     public static class Literal extends Expr {
-        String value;
+        String word;
 
-        public Literal(String value) {
-            this.value = value;
+        public Literal(String word) {
+            this.word = word;
         }
 
         @Override

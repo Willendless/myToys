@@ -31,6 +31,8 @@ public class Main {
                     System.out.println("> " + "token " + i + ": " + t);
                     ++i;
                 }
+                System.out.print("> " + "ast ");
+                new AstPrinter().print(new Parser(tokens).parse());
             } catch (LineMatchException e) {
                 System.err.println(e.getMsg());
                 System.exit(-1);
