@@ -4,7 +4,6 @@ import code.Expr.Binary;
 import code.Expr.Grouping;
 import code.Expr.Literal;
 import code.Expr.Unary;
-import code.SearchTarget.SearchTargetItem.SearchType;
 
 import static code.SearchTarget.SearchTargetItem;
 
@@ -17,28 +16,26 @@ public class Interpreter implements Expr.Visitor<SearchTarget> {
     @Override
     public SearchTarget visitLiteral(Literal literal) {
         SearchTarget re = new SearchTarget();
-        re.add(new SearchTargetItem(SearchType.EXIST, literal.word));
+        re.add(new SearchTargetItem(literal.word, ""));
         return re;
     }
 
     @Override
     public SearchTarget visitUnary(Unary unary) {
         SearchTarget re = new SearchTarget();
-        re.add(new SearchTargetItem(SearchType.NONEXIST, unary.literal.word));
+        re.add(new SearchTargetItem("", unary.literal.word));
         return re;
     }
 
     @Override
     public SearchTarget visitBinary(Binary binary) {
-        SearchTarget re;
+        SearchTarget re = binary.left.accept(this);
         switch (binary.operator.getType()) {
         case AND: {
-            re = new SearchTarget(binary.left.accept(this));
             re.and(binary.right.accept(this));
             break;
         }
         case OR: {
-            re = new SearchTarget(binary.left.accept(this));
             re.or(binary.right.accept(this));
             break;
         }

@@ -10,28 +10,31 @@ package code;
 import java.util.HashSet;
 import java.util.Set;
 
-import code.SearchTarget.SearchTargetItem.SearchType;
-
 public class SearchTarget {
 
     Set<SearchTargetItem> searchSet = new HashSet<>();
 
     static class SearchTargetItem {
-        static enum SearchType {
-            EXIST,
-            NONEXIST
-        }
-        SearchType _type;
         String _target;
+        String _nonTarget;
 
-        SearchTargetItem(SearchType type, String target) {
-            _type = type;
+        SearchTargetItem(String target, String nonTarget) {
             _target = target;
+            _nonTarget = nonTarget;
         }
 
-        SearchTargetItem(SearchTargetItem other) {
-            _type = other._type;
-            _target = other._target;
+        @Override
+        public String toString() {
+            String re = "";
+            if (!_target.equals(""))
+                re = _target;
+            if (!_nonTarget.equals("")) {
+                if (!re.equals(""))
+                    re = re + " && " + "!" + _nonTarget;
+                else
+                    re = "!" + _nonTarget;
+            }
+            return re;
         }
     }
 
@@ -39,54 +42,36 @@ public class SearchTarget {
 
     }
 
-    SearchTarget(SearchTarget other) {
-        for (SearchTargetItem s : other.searchSet) {
-            add(new SearchTargetItem(s));
-        }
-    }
-
     public void and(SearchTarget other) {
+        Set<SearchTargetItem> newSet = new HashSet<>();
         for (SearchTargetItem s1 : searchSet) {
             for (SearchTargetItem s2 : other.searchSet) {
-                if (s1._type == s2._type) {
-                    add(new SearchTargetItem(s1._type, s1._target + " " + s2._target));
-                    remove(s1);
-                    remove(s2);
-                } else {
-                    remove(s1);
-                    remove(s2);
-                    add(new SearchTargetItem(SearchType.NONEXIST,
-                                             s1._target + s2._target));
-                    add(new SearchTargetItem(SearchType.EXIST, 
-                                             s1._type == SearchType.EXIST ?
-                                             s1._target : s2._target));
-                }
+                newSet.add(new SearchTargetItem((s1._target + " " + s2._target).trim(),
+                                                (s1._nonTarget + " " + s2._nonTarget).trim()));
             }
         }
+        searchSet = newSet;
     }
 
     public void or(SearchTarget other) {
-        for (SearchTargetItem s : searchSet) {
-            add(s);
-        }
-        for (SearchTargetItem s : other.searchSet) {
-            add(s);
+        for (SearchTargetItem item : other.searchSet) {
+            add(item);
         }
     }
 
-    public void add(SearchTargetItem si) {
-        searchSet.add(si);
+    public void add(SearchTargetItem item) {
+        searchSet.add(item);
     }
 
-    public void remove(SearchTargetItem si) {
-        searchSet.remove(si);
+    public void remove(SearchTargetItem item) {
+        searchSet.remove(item);
     }
 
     @Override
     public String toString() {
         StringBuilder re = new StringBuilder();
         for (SearchTargetItem s : searchSet) {
-            re.append(s._type + " " + s._target + "\n");
+            re.append("{" + s +"}" + " ");
         }
         return re.toString();
     }
