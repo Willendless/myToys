@@ -1,5 +1,9 @@
 # Linematch: A simple file line search engine in java
 
+2017年上海交通大学软件学院暑期夏令营机试题目
+
+![规范](./spec.jpg)
+
 ## TODO
 
 - [x] lexer
