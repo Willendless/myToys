@@ -1,5 +1,16 @@
 # Linematch: A simple file line search engine in java
 
+## TODO
+
+- [x] lexer
+- [x] parser
+- [x] interpreter
+- [x] command line version
+- [ ] gui version
+- [ ] 忽略单复数
+- [ ] 忽略三单，现在分词，过去式和过去分词
+
+
 ## search flow
 
 1. input search expression
