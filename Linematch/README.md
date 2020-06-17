@@ -2,8 +2,6 @@
 
 [2017年上海交通大学软件学院暑期夏令营机试题目](https://blog.csdn.net/qian2213762498/article/details/81749247)
 
-![规范](./spec.jpg)
-
 ## TODO
 
 - [x] lexer
@@ -13,7 +11,6 @@
 - [ ] gui version
 - [ ] 忽略单复数
 - [ ] 忽略三单，现在分词，过去式和过去分词
-
 
 ## search flow
 
@@ -49,3 +46,10 @@ primary    -> WORD
             | "(" expression ")"
             | "!" WORD
 ```
+
+## spec
+
+![spec1](./spec1.jpg)
+![spec2](./spec2.jpg)
+![spec3](./spec3.jpg)
+![spec4](./spec4.jpg)
