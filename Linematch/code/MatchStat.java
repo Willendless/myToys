@@ -2,7 +2,7 @@
  * @Author: Willendless
  * @Date: 2020-06-16
  * @Description: Do not edit
- * @LastEditTime: 2020-06-16
+ * @LastEditTime: 2020-06-18
  * @FilePath: \code\MatchStat.java
  */
 package code;
@@ -38,7 +38,12 @@ public class MatchStat {
         StringBuilder re = new StringBuilder();
         for (Map.Entry<SearchTargetItem, Integer> en
             : searchItemMap.entrySet()) {
-            re.append(en.getKey() + ": " + en.getValue() + " occurrences" + "\n");
+            re.append(en.getKey() + ": " + en.getValue());
+            if (en.getValue() == 1) {
+                re.append(" occurrence" + "\n");
+            } else {
+                re.append(" occurrences" + "\n");
+            }
         }
         re.append("\n");
         int i = 1;
