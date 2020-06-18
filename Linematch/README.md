@@ -2,6 +2,10 @@
 
 [2017年上海交通大学软件学院暑期夏令营机试题目](https://blog.csdn.net/qian2213762498/article/details/81749247)
 
+## spec
+
+[spec](./spec.pdf)
+
 ## TODO
 
 - [x] lexer
@@ -46,10 +50,3 @@ primary    -> WORD
             | "(" expression ")"
             | "!" WORD
 ```
-
-## spec
-
-![spec1](./spec1.jpg)
-![spec2](./spec2.jpg)
-![spec3](./spec3.jpg)
-![spec4](./spec4.jpg)
