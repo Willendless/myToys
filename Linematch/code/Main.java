@@ -2,7 +2,7 @@
  * @Author: Willendless
  * @Date: 2020-06-14
  * @Description: top main file of Linematch
- * @LastEditTime: 2020-06-16
+ * @LastEditTime: 2020-06-18
  * @FilePath: \code\Main.java
  */
 
@@ -12,7 +12,6 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import code.Matcher;
 
 
 public class Main {
@@ -51,7 +50,9 @@ public class Main {
                 System.out.println("> file not exists");
             } else {
                 try {
-                    System.out.println(new Matcher(s).match(file));
+                    Matcher matcher = new Matcher();
+                    matcher.setFile(file);
+                    System.out.println(matcher.match());
                 } catch (IOException e) {
                     System.out.println("> IOException");
                 }

@@ -2,7 +2,7 @@
  * @Author: Willendless
  * @Date: 2020-06-15
  * @Description: parser implementation
- * @LastEditTime: 2020-06-15
+ * @LastEditTime: 2020-06-18
  * @FilePath: \code\Parser.java
  */
 package code;
@@ -14,15 +14,24 @@ import code.Token.TokenType;
 import static code.Token.TokenType.*;
 
 public class Parser {
-    private final List<Token> _tokens;
+    private List<Token> _tokens;
     private int _pos = 0;
+
+    public Parser() {
+
+    }
 
     public Parser(List<Token> tokens) {
         _tokens = tokens;
     }
 
+    public void setTokens(List<Token> tokens) {
+        _tokens = tokens;
+    }
+
     public Expr parse() {
         try {
+            _pos = 0;
             return expression();
         } catch (LineMatchException e) {
             return null;

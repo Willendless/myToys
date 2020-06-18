@@ -2,7 +2,7 @@
  * @Author: Willendless
  * @Date: 2020-06-16
  * @Description: SearchTarget class, value produced by interpreter
- * @LastEditTime: 2020-06-16
+ * @LastEditTime: 2020-06-18
  * @FilePath: \code\SearchTarget.java
  */
 package code;
@@ -19,8 +19,8 @@ public class SearchTarget {
         String _nonTarget;
 
         SearchTargetItem(String target, String nonTarget) {
-            _target = target;
-            _nonTarget = nonTarget;
+            _target = target.toLowerCase();
+            _nonTarget = nonTarget.toLowerCase();
         }
 
         @Override

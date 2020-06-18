@@ -2,7 +2,7 @@
  * @Author: Willendless
  * @Date: 2020-06-16
  * @Description: tokenizer implement
- * @LastEditTime: 2020-06-16
+ * @LastEditTime: 2020-06-18
  * @FilePath: \code\Tokenizer.java
  */
 package code;
@@ -19,7 +19,15 @@ public class Tokenizer {
 
     String text;
 
+    public Tokenizer() {
+
+    }
+
     public Tokenizer(String text) {
+        this.text = text;
+    }
+
+    public void setText(String text) {
         this.text = text;
     }
 
