@@ -12,7 +12,8 @@
 - [x] parser
 - [x] interpreter
 - [x] command line version
-- [ ] gui version
+- [x] gui version
+- [x] 忽略大小写
 - [ ] 忽略单复数
 - [ ] 忽略三单，现在分词，过去式和过去分词
 
@@ -50,3 +51,9 @@ primary    -> WORD
             | "(" expression ")"
             | "!" WORD
 ```
+
+## Usecase
+
+![初始界面](./usecase/1.png)
+![搜索1](./usecase/2.png)
+![搜索2](./usecase/3.png)
