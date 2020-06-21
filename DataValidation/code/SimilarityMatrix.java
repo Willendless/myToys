@@ -2,7 +2,7 @@
  * @Author: Willendless
  * @Date: 2020-06-19
  * @Description: Do not edit
- * @LastEditTime: 2020-06-19
+ * @LastEditTime: 2020-06-20
  * @FilePath: \code\SimilarityMatrix.java
  */
 public class SimilarityMatrix {
@@ -13,20 +13,19 @@ public class SimilarityMatrix {
     int yBegIndex;
     int yEndIndex;
 
-    SimilarityMatrix() {
-
+    SimilarityMatrix(int[][] m, int begIndex) {
+        setSimilarityMatrix(m);
+        setIndex(begIndex);
     }
 
-    void setSimilarityMatrix(int[][] matrix) {
+    private void setSimilarityMatrix(int[][] matrix) {
         similarityMatrix = new int[matrix.length][matrix[0].length];
         for (int i = 0; i < matrix.length; i++) {
-            System.arraycopy(matrix[i], 0,
-                             similarityMatrix, 0,
-                             matrix[i].length);
+            similarityMatrix[i] = matrix[i];
         }
     }
 
-    void setIndex(int begIndex) {
+    private void setIndex(int begIndex) {
         xBegIndex = begIndex;
         xEndIndex = xBegIndex + similarityMatrix.length;
         yBegIndex = xEndIndex;
