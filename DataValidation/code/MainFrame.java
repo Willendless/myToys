@@ -2,7 +2,7 @@
  * @Author: Willendless
  * @Date: 2020-06-19
  * @Description: MainFrame class
- * @LastEditTime: 2020-06-20
+ * @LastEditTime: 2020-06-21
  * @FilePath: \code\MainFrame.java
  */
 
@@ -116,9 +116,9 @@ public class MainFrame extends JFrame {
         southPanel.setBounds(0, 670, FRAMEW, 40);
         southPanel.setLayout(null);
         southPanel.add(thresholdLabel);
-        southPanel.setBackground(Color.CYAN);
+        // southPanel.setBackground(Color.CYAN);
         thresholdLabel.setBounds(20, 10, 100, 30);
-
+        thresholdLabel.setVisible(false);
     }
 
     public void paintDirectMap() {
@@ -134,7 +134,7 @@ public class MainFrame extends JFrame {
         JPanel heatMapPanel = new JPanel();
         tablePanels[i].setLayout(null);
         tablePanels[i].setBounds(x, y, FRAMEW, 300);
-        tablePanels[i].setBackground(Color.YELLOW);
+        // tablePanels[i].setBackground(Color.YELLOW);
         tablePanels[i].add(label);
         label.setBounds(20, 0, 70, 20);
         tablePanels[i].add(heatMapPanel);
@@ -144,8 +144,8 @@ public class MainFrame extends JFrame {
         for (int j = 0; j < maps.length; j++) {
             System.out.println("> debug: heat map length " + maps.length);
             heatMapPanel.add(maps[j]);
-            maps[j].setBounds(0 + 200 * j, 0, 200, 200);
-            maps[j].setBorder(BorderFactory.createLineBorder(Color.GREEN));
+            maps[j].setBounds(15 + 200 * j, 15, 200, 200);
+            // maps[j].setBorder(BorderFactory.createLineBorder(Color.GREEN));
         }
         tablePanels[i].add(resultLabels[i]);
         resultLabels[i].setBounds(20, 260, 100, 20);
