@@ -6,5 +6,7 @@
 
 [spec](./spec.pdf)
 
-## 
+## Usecase
 
+![open](./usecase/1.png)
+![open](./usecase/2.png)
