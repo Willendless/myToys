@@ -3,7 +3,7 @@
  * @Author: Willendless
  * @Date: 2020-06-19
  * @Description: controller class
- * @LastEditTime: 2020-06-20
+ * @LastEditTime: 2020-06-21
  * @FilePath: \code\Controller.java
  */
 import java.io.BufferedReader;
@@ -54,7 +54,7 @@ public class Controller {
         for (int i = 0; i < len; i++) {
             for (int j = len; j < len * 2; j++) {
                 re[i][j - len] = list.get(i).equals(list.get(j)) ?
-                                1 : 0;
+                                3 : -1;
             }
         }
         return re;

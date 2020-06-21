@@ -2,7 +2,7 @@
  * @Author: Willendless
  * @Date: 2020-06-19
  * @Description: Do not edit
- * @LastEditTime: 2020-06-20
+ * @LastEditTime: 2020-06-21
  * @FilePath: \code\HeatMap.java
  */
 
@@ -21,13 +21,13 @@ public class HeatMap extends JPanel {
 
     private SimilarityMatrix m;
 
-    private static Color[] colors = new Color[21];
+    private static Color[] colors = new Color[26];
 
     int offset;
 
     static {
         Color c1 = Color.BLACK;
-        Color c2 = Color.ORANGE;
+        Color c2 = Color.RED;
 
         int r1 = c1.getRed();
         int g1 = c1.getGreen();
@@ -39,8 +39,8 @@ public class HeatMap extends JPanel {
         int b2 = c2.getBlue();
         int a2 = c2.getAlpha();
 
-        for (int i = 0; i < 8; i++) {
-            double norm = i / (double)20;
+        for (int i = 0; i < 26; i++) {
+            double norm = i / (double)25;
             int newR = (int)(r1 + (r2 - r1) * norm);
             int newG = (int)(g1 + (g2 - g1) * norm);
             int newB = (int)(b1 + (b2 - b1) * norm);
@@ -66,7 +66,7 @@ public class HeatMap extends JPanel {
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < length; j++) {
                 int degree = m.similarityMatrix[i][j];
-                degree = degree > 20 ? 20 : degree;
+                degree = degree > 25 ? 25 : degree;
                 g2d.setColor(colors[degree]);
                 int x = i << 1;
                 int y = (length - 1 - j) << 1;
