@@ -9,7 +9,7 @@ import java.util.Scanner;
  * @Author: Willendless
  * @Date: 2020-06-25
  * @Description: Do not edit
- * @LastEditTime: 2020-06-25
+ * @LastEditTime: 2020-06-26
  * @FilePath: \code\Main.java
  */
 
@@ -19,8 +19,8 @@ public class Main {
         Hash linearHash = new LinearHash();
         Hash cuckooHash = new CuckooHash();
 
-        process("small", linearHash);
-        // process("large", linearHash);
+        // process("small", linearHash);
+        process("large", linearHash);
 
     }
 

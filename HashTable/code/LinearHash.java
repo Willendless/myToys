@@ -1,10 +1,8 @@
-import java.util.HashSet;
-
 /**
  * @Author: Willendless
  * @Date: 2020-06-25
  * @Description: Do not edit
- * @LastEditTime: 2020-06-25
+ * @LastEditTime: 2020-06-26
  * @FilePath: \code\LinearHash.java
  */
 
@@ -13,18 +11,20 @@ public class LinearHash implements Hash {
     KeyVal[] container;
     int size = 0;
 
-    private LinearHash(int volume) {
-        container = new KeyVal[volume];
+    private LinearHash(int volume, int size) {
+        this.container = new KeyVal[volume];
+        this.size = size;
     }
 
     LinearHash() {
-        this(8);
+        this(8, 0);
     }
 
     @Override
     public void set(long key, long value) {
-        if ((size + 1) << 1 > container.length)
+        if ((size + 1) << 1 > container.length) {
             grow();
+        }
 
         int i;
         int beg = (int)getPosition(key);
@@ -36,15 +36,12 @@ public class LinearHash implements Hash {
             if (container[i] == null) {
                 container[i] = new KeyVal(key, value);
                 size++;
-                check("set new");
                 return;
             } else if (container[i].key == key) {
                 container[i].value = value;
-                check("set old");
                 return;
             }
         }
-        System.err.println("Fail to set");
     }
 
     @Override
@@ -57,47 +54,22 @@ public class LinearHash implements Hash {
 
     @Override
     public void delete(long key) {
-
-        check("delete pre");
-        int LEN = container.length;
         Integer p = find(key);
         if (p == null)
             return;
         container[p] = null;
         size--;
-        
-        adjust(p);
-        check("delete");
-    }
 
-    private void adjust(int p) {
-
-        int i;
-        int recx = -1;
-        final int LEN = container.length;
-
-        for (i = (p + 1) % LEN; i < LEN; i++) {
-            if (container[i] == null)
-                break;
-            int ox = (int)getPosition(container[i].key);
-            if (ox > i || (ox <= p))
-                recx = i;
+        for (int i = (p + 1) % container.length;
+             container[i] != null;
+             i = (i + 1) % container.length) {
+            long k = container[i].key;
+            long value = container[i].value;
+            container[i] = null;
+            set(k, value);
         }
 
-        if (i == LEN) {
-            for (i = 0; i < p; i++) {
-                if (container[i] == null)
-                    break;
-                int ox = (int)getPosition(container[i].key);
-                if (ox > i && ox <= p)
-                    recx = i;
-            }
-        }
-
-        if (recx != -1) {
-            container[p] = container[recx];
-            adjust(recx);
-        }
+        // check("delete");
     }
 
     private Integer find(long key) {
@@ -116,7 +88,7 @@ public class LinearHash implements Hash {
     }
 
     private void grow() {
-        LinearHash ret = new LinearHash(container.length << 1);
+        LinearHash ret = new LinearHash(container.length << 1, size);
 
         for (int i = 0; i < container.length; i++) {
             if (container[i] != null) {
@@ -136,7 +108,7 @@ public class LinearHash implements Hash {
     private void check(String src) {
         for (int i = 0; i < container.length; i++) {
             if (container[i] != null && find(container[i].key) == null) {
-                System.out.println(src + " fail");
+                System.out.println(src + " fail" + " " + container[i].key + " " + container[i].value);
                 System.exit(-1);
             }
         }
