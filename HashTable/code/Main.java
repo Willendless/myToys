@@ -9,7 +9,7 @@ import java.util.Scanner;
  * @Author: Willendless
  * @Date: 2020-06-25
  * @Description: Do not edit
- * @LastEditTime: 2020-06-26
+ * @LastEditTime: 2020-06-27
  * @FilePath: \code\Main.java
  */
 
@@ -45,6 +45,7 @@ public class Main {
                     long key = s.nextLong();
                     hash.delete(key);
                 }
+                s.close();
             }
             scanner.close();
             writer.close();

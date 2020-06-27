@@ -2,7 +2,7 @@
  * @Author: Willendless
  * @Date: 2020-06-25
  * @Description: Do not edit
- * @LastEditTime: 2020-06-26
+ * @LastEditTime: 2020-06-27
  * @FilePath: \code\CuckooHash.java
  */
 
@@ -115,6 +115,19 @@ public class CuckooHash implements Hash {
             System.exit(-1);
         }
         return 0;
+    }
+
+    public Long[][] getKeySet() {
+        Long[][]ret = new Long[2][hash[0].length];
+        for (int i = 0; i < ret[0].length; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (hash[j][i] == null)
+                    ret[j][i] = null;
+                else
+                    ret[j][i] = hash[j][i].key;
+            }
+        }
+        return ret;
     }
     
 }
