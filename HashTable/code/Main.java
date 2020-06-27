@@ -25,7 +25,7 @@ public class Main {
 
     static void process(String name, Hash hash, String outputName) {
         try {
-            String out = System.getProperty("user.dir") + "\\data\\" + name + ".out";
+            String out = System.getProperty("user.dir") + "\\data\\" + outputName + ".out";
             File in1 = new File(System.getProperty("user.dir") + "\\data\\" + name + ".in");
             BufferedWriter writer = new BufferedWriter(new FileWriter(out));
             Scanner scanner = new Scanner(in1);

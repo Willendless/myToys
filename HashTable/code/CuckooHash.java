@@ -1,5 +1,3 @@
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
-
 /**
  * @Author: Willendless
  * @Date: 2020-06-25
@@ -28,7 +26,7 @@ public class CuckooHash implements Hash {
             hash[0][p].value = value;
             return;
         }
-        p = find(2, key);
+        p = find(1, key);
         if (p >= 0) {
             hash[1][p].value = value;
             return;
@@ -67,7 +65,8 @@ public class CuckooHash implements Hash {
 
         for (int i = 0; i < hash[0].length; i++) {
             for (int j = 0; j < 2; j++) {
-                h.set(hash[j][i].key, hash[j][i].value);
+                if (hash[j][i] != null)
+                    h.set(hash[j][i].key, hash[j][i].value);
             }
         }
 
@@ -77,20 +76,21 @@ public class CuckooHash implements Hash {
 
     @Override
     public Long get(long key) {
-        int p = find(1, key);
-        if (p < 0)
+        int p = find(0, key);
+        if (p >= 0)
             return hash[0][p].value;
-        p = find(2, key);
-        if (p < 0)
+        p = find(1, key);
+        if (p >= 0)
             return hash[1][p].value;
         return null;
     }
 
     private int find(int type, long key) {
         int pos = getPosition(type, key);
-        if (hash[type][pos].key == key)
-            return pos;
-        return -1;
+        if (hash[type][pos] == null ||
+            hash[type][pos].key != key)
+            return -1;
+        return pos;
     }
 
     @Override
@@ -111,7 +111,7 @@ public class CuckooHash implements Hash {
         } else if (type == 1) {
             return (int)((key / hash[type].length) % hash[type].length);
         } else {
-            System.err.println("Faile to get position");
+            System.err.println("Failed to get position");
             System.exit(-1);
         }
         return 0;

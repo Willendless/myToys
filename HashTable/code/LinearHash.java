@@ -96,9 +96,7 @@ public class LinearHash implements Hash {
             }
         }
 
-        container = new KeyVal[container.length << 1];
-
-        System.arraycopy(ret.container, 0, container, 0, container.length);
+        container = ret.container;
     }
 
     private long getPosition(long key) {
