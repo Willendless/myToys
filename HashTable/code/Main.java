@@ -16,15 +16,14 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        Hash linearHash = new LinearHash();
-        Hash cuckooHash = new CuckooHash();
+        process("small", new LinearHash(), "smallLinear");
+        process("large", new LinearHash(), "largeLinear");
 
-        // process("small", linearHash);
-        process("large", linearHash);
-
+        process("small", new CuckooHash(), "smallCuckoo");
+        process("large", new CuckooHash(), "largeCuckoo");
     }
 
-    static void process(String name, Hash hash) {
+    static void process(String name, Hash hash, String outputName) {
         try {
             String out = System.getProperty("user.dir") + "\\data\\" + name + ".out";
             File in1 = new File(System.getProperty("user.dir") + "\\data\\" + name + ".in");
