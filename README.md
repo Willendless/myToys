@@ -8,3 +8,4 @@ My toys implemented for fun and profit
 - [x] [HashTable: A toy hashtable implementation with gui in java](./HashTable)
 - [ ] [DonkeyDB: A toy dbms in c](./DonkeyDB)
 - [ ] [DonkeyEditor: A toy editor in c](./DonkeyEditor)
+- [ ] [JLox: A toy interpreter for Lox in java](./jlox)
