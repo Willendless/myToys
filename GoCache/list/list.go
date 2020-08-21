@@ -1,4 +1,4 @@
-package ll
+package list
 
 import "fmt"
 
@@ -9,14 +9,14 @@ type Entry struct {
 	post  *Entry
 }
 
-type ll struct {
+type List struct {
 	Size int
 	head Entry
 	tail Entry
 }
 
-func New() *ll {
-	var ll ll
+func New() *List {
+	var ll List
 	ll.Size = 0
 	ll.head.post = &ll.tail
 	ll.tail.prev = &ll.head
@@ -44,14 +44,14 @@ func (en *Entry) IsEnd() bool {
 	return false
 }
 
-func (ll *ll) Begin() *Entry {
+func (ll *List) Begin() *Entry {
 	if ll.head.post == &ll.tail {
 		return nil
 	}
 	return ll.head.post
 }
 
-func (ll *ll) PushBack(v interface{}) *Entry {
+func (ll *List) PushBack(v interface{}) *Entry {
 	ll.Size++
 	en := &Entry{v, nil, nil}
 	en.post = &ll.tail
@@ -61,7 +61,7 @@ func (ll *ll) PushBack(v interface{}) *Entry {
 	return en
 }
 
-func (ll *ll) PushFront(v interface{}) *Entry {
+func (ll *List) PushFront(v interface{}) *Entry {
 	ll.Size++
 	en := &Entry{v, nil, nil}
 	en.prev = &ll.head
@@ -71,7 +71,7 @@ func (ll *ll) PushFront(v interface{}) *Entry {
 	return en
 }
 
-func (ll *ll) Remove(en *Entry) interface{} {
+func (ll *List) Remove(en *Entry) interface{} {
 	if en == nil {
 		panic(fmt.Sprintf("Nil pointer"))
 	}

@@ -1,11 +1,14 @@
 package lru
 
-import "gocache.ll"
+import "gocache/list"
 
 type Cache struct {
-	ll ll,
+	ll list.List
+	a  int
 }
 
 func New() *Cache {
+	ll = list.New()
 
+	return nil
 }

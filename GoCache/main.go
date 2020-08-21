@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"gocache/ll"
+	"gocache/list"
 )
 
 func main() {
-	ll := ll.New()
+	ll := list.New()
 	ll.PushFront(1)
 	ll.PushBack(2)
 	for en := ll.Begin(); en != nil; en = en.Post() {
