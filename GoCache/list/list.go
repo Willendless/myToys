@@ -2,17 +2,17 @@ package list
 
 import "fmt"
 
-// Entry is linked list's node
-type Entry struct {
+// Node is linked list's node
+type Node struct {
 	Value interface{}
-	prev  *Entry
-	post  *Entry
+	prev  *Node
+	post  *Node
 }
 
 type List struct {
 	Size int
-	head Entry
-	tail Entry
+	head Node
+	tail Node
 }
 
 func New() *List {
@@ -23,37 +23,44 @@ func New() *List {
 	return &ll
 }
 
-func (en *Entry) Post() *Entry {
+func (en *Node) Post() *Node {
 	if en == nil || en.post.post == nil || en.post == nil {
 		return nil
 	}
 	return en.post
 }
 
-func (en *Entry) Prev() *Entry {
+func (en *Node) Prev() *Node {
 	if en == nil || en.prev.prev == nil || en.prev == nil {
 		return nil
 	}
 	return en.prev
 }
 
-func (en *Entry) IsEnd() bool {
+func (en *Node) IsEnd() bool {
 	if en.post.post == nil {
 		return true
 	}
 	return false
 }
 
-func (ll *List) Begin() *Entry {
+func (ll *List) Begin() *Node {
 	if ll.head.post == &ll.tail {
 		return nil
 	}
 	return ll.head.post
 }
 
-func (ll *List) PushBack(v interface{}) *Entry {
+func (ll *List) End() *Node {
+	if ll.tail.prev == &ll.head {
+		return nil
+	}
+	return ll.tail.prev
+}
+
+func (ll *List) PushBack(v interface{}) *Node {
 	ll.Size++
-	en := &Entry{v, nil, nil}
+	en := &Node{v, nil, nil}
 	en.post = &ll.tail
 	en.prev = ll.tail.prev
 	en.post.prev = en
@@ -61,9 +68,9 @@ func (ll *List) PushBack(v interface{}) *Entry {
 	return en
 }
 
-func (ll *List) PushFront(v interface{}) *Entry {
+func (ll *List) PushFront(v interface{}) *Node {
 	ll.Size++
-	en := &Entry{v, nil, nil}
+	en := &Node{v, nil, nil}
 	en.prev = &ll.head
 	en.post = ll.head.post
 	en.post.prev = en
@@ -71,8 +78,8 @@ func (ll *List) PushFront(v interface{}) *Entry {
 	return en
 }
 
-func (ll *List) Remove(en *Entry) interface{} {
-	if en == nil {
+func (ll *List) Remove(en *Node) interface{} {
+	if en == nil || en.prev == nil || en.post == nil {
 		panic(fmt.Sprintf("Nil pointer"))
 	}
 
