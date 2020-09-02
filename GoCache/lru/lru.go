@@ -2,7 +2,10 @@ package lru
 
 import "gocache/list"
 
-// Cache is a LRU cache. Currently not safe for concurrent access.
+//
+// Cache is a LRU cache.
+// Currently not safe for concurrent access.
+//
 type Cache struct {
 	maxBytes int64 // 最大可使用内存
 	curBytes int64 // 当前使用的内存
@@ -12,32 +15,44 @@ type Cache struct {
 	OnEvicted func(key string, value Value)
 }
 
+//
 // entry is stored in element of list
+//
 type entry struct {
 	key   string
 	value Value
 }
 
+//
 // Value can return how many bytes it takes
+//
 type Value interface {
 	Len() int
 }
 
+//
+// Len return the size of the LRU cache
+//
 func (c *Cache) Len() int {
 	return c.ll.Size
 }
 
+//
 // New is the constructor of cache
+//
 func New(maxBytes int64, onEvicted func(string, Value)) *Cache {
 	return &Cache{
 		maxBytes:  maxBytes,
 		ll:        list.New(),
-		keyMap:    make(map[string]*list.Node),
+		keyMap:    map[string]*list.Node{},
 		OnEvicted: onEvicted,
 	}
 }
 
+//
 // Get looks up corresponding value of key
+// and put that entry into the tail of the list
+//
 func (c *Cache) Get(key string) (value Value, ok bool) {
 	if enp, ok := c.keyMap[key]; ok {
 		value := c.ll.Remove(enp).(*entry)
@@ -48,7 +63,9 @@ func (c *Cache) Get(key string) (value Value, ok bool) {
 	return nil, false
 }
 
-// Evict drop least recently used item
+//
+// Evict drop least recently used item(i.e. the head of the list)
+//
 func (c *Cache) Evict() {
 	en := c.ll.Begin()
 	if en != nil {
@@ -62,7 +79,9 @@ func (c *Cache) Evict() {
 	}
 }
 
-// Put entry to the cache
+//
+// Put entry to the cache, also move to tail of the LRU list
+//
 func (c *Cache) Put(key string, value Value) {
 	// check if key exists
 	if enp, ok := c.keyMap[key]; ok {

@@ -1,6 +1,9 @@
 package list
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 // Node is linked list's node
 type Node struct {
@@ -16,28 +19,30 @@ type List struct {
 }
 
 func New() *List {
-	var ll List
-	ll.Size = 0
+	ll := new(List)
 	ll.head.post = &ll.tail
 	ll.tail.prev = &ll.head
-	return &ll
+	return ll
 }
 
 func (en *Node) Post() *Node {
-	if en == nil || en.post.post == nil || en.post == nil {
+	if en == nil || en.post == nil || en.post.post == nil {
 		return nil
 	}
 	return en.post
 }
 
 func (en *Node) Prev() *Node {
-	if en == nil || en.prev.prev == nil || en.prev == nil {
+	if en == nil || en.prev == nil || en.prev.prev == nil {
 		return nil
 	}
 	return en.prev
 }
 
 func (en *Node) IsEnd() bool {
+	if en == nil || en.post == nil {
+		log.Fatalln("Invalid Node pointer")
+	}
 	if en.post.post == nil {
 		return true
 	}
