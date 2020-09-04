@@ -45,6 +45,7 @@
 func (p *HTTPPool) Log(format string, v ...interface{}) {
 	log.Printf("[Server %s] %s", p.self, fmt.Sprintf(format, v...))
 }
+```
 
 ### 二分查找
 
