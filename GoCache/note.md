@@ -46,6 +46,12 @@ func (p *HTTPPool) Log(format string, v ...interface{}) {
 	log.Printf("[Server %s] %s", p.self, fmt.Sprintf(format, v...))
 }
 
+### 二分查找
+
++ Search uses binary search to find and return the smallest index i in [0, n) at which f(i) is true
++ 如果均为false则返回第一个参数
++ `sourt.Search(len(data), func(i int) bool { return data[i] >= x })`
+
 ## 其它
 
 ### 查看端口使用情况并删除占用的进程
@@ -56,4 +62,13 @@ func (p *HTTPPool) Log(format string, v ...interface{}) {
     + -t: 仅显示tcp相关选项
     + -p: 显示建立相关链接的程序名
 2. kill -9
+
+### vim全局替换
+
+1. 替换当前行第一个`:s/old/new/`
+2. 替换改行所有`:s/old/new/g`
+3. 多行替换`:50, 100 s/old/new/g`
+4. 整个文件替换`1,$s/old/new/g`
+    + `%`等价于`1, $`
+    + `%s/old/new/g`
 ```
