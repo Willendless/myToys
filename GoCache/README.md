@@ -4,4 +4,5 @@ A groupcache-like distributed cache based on these [blogs](https://geektutu.com/
 
 ## note
 
-[note](./note.md)
+- [x] [Design Doc](./designdoc.md)
+- [x] [note](./note.md)

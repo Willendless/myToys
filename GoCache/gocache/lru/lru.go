@@ -1,6 +1,9 @@
 package lru
 
-import "gocache/list"
+import (
+	"gocache/list"
+	"log"
+)
 
 //
 // Cache is a LRU cache.
@@ -54,11 +57,11 @@ func New(maxBytes int64, onEvicted func(string, Value)) *Cache {
 // and put that entry into the tail of the list
 //
 func (c *Cache) Get(key string) (value Value, ok bool) {
-	if enp, ok := c.keyMap[key]; ok {
-		value := c.ll.Remove(enp).(*entry)
-		c.ll.PushBack(value)
-		ret := enp.Value.(*entry)
-		return ret.value, true
+	if nodep, ok := c.keyMap[key]; ok {
+		en := c.ll.Remove(nodep).(*entry)
+		nodep := c.ll.PushBack(en)
+		c.keyMap[key] = nodep
+		return en.value, true
 	}
 	return nil, false
 }
@@ -67,14 +70,15 @@ func (c *Cache) Get(key string) (value Value, ok bool) {
 // Evict drop least recently used item(i.e. the head of the list)
 //
 func (c *Cache) Evict() {
-	en := c.ll.Begin()
-	if en != nil {
-		c.ll.Remove(en)
-		enValue := en.Value.(*entry)
-		delete(c.keyMap, enValue.key)
-		c.curBytes -= int64(len(enValue.key)) + int64(enValue.value.Len())
+	log.Println("Evict!!!!!!!!!!")
+	nodep := c.ll.Begin()
+	if nodep != nil {
+		c.ll.Remove(nodep)
+		en := nodep.Item.(*entry)
+		delete(c.keyMap, en.key)
+		c.curBytes -= int64(en.value.Len()) + int64(len(en.key))
 		if c.OnEvicted != nil {
-			c.OnEvicted(enValue.key, enValue.value)
+			c.OnEvicted(en.key, en.value)
 		}
 	}
 }
@@ -84,15 +88,14 @@ func (c *Cache) Evict() {
 //
 func (c *Cache) Put(key string, value Value) {
 	// check if key exists
-	if enp, ok := c.keyMap[key]; ok {
-		c.ll.Remove(enp)
-		c.ll.PushBack(enp)
-		data := enp.Value.(*entry)
-		c.curBytes += int64(value.Len()) - int64(data.value.Len())
-		data.value = value
+	if nodep, ok := c.keyMap[key]; ok {
+		oldEn := c.ll.Remove(nodep).(*entry)
+		nodep := c.ll.PushBack(&entry{key, value})
+		c.keyMap[key] = nodep
+		c.curBytes += int64(value.Len()) - int64(oldEn.value.Len())
 	} else {
-		enp := c.ll.PushBack(&entry{key, value})
-		c.keyMap[key] = enp
+		nodep := c.ll.PushBack(&entry{key, value})
+		c.keyMap[key] = nodep
 		c.curBytes += int64(len(key)) + int64(value.Len())
 	}
 	// if curBytes > memBytes, evict tail of the cache

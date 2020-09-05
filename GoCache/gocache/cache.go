@@ -24,6 +24,10 @@ func (c *cache) add(key string, value ByteView) {
 func (c *cache) get(key string) (value ByteView, ok bool) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
+	// nil key
+	if key == "" {
+		return
+	}
 	// no item in lru cache yet
 	if c.lru == nil {
 		return

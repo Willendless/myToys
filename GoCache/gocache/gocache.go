@@ -26,19 +26,35 @@ func (f GetterFunc) Get(key string) ([]byte, error) {
 	return f(key)
 }
 
+// PeerPicker defines a type which can pick peer
+type PeerPicker interface {
+	PickPeer(key string) (*HTTPClient, bool)
+}
+
 //
 // Group is a cache namespace and associated data
 //
 type Group struct {
-	name      string
-	getter    Getter
-	mainCache cache
+	name       string
+	getter     Getter
+	mainCache  cache
+	peerPicker PeerPicker
 }
 
 var (
 	mu     sync.RWMutex
 	groups = make(map[string]*Group)
 )
+
+//
+// RegisterPeerPicker register a PeerPicker for peer choosing
+//
+func (g *Group) RegisterPeerPicker(peerPicker PeerPicker) {
+	if g.peerPicker != nil {
+		panic("RegisterPeerPicker called more than once")
+	}
+	g.peerPicker = peerPicker
+}
 
 //
 // NewGroup create a new instance of Group
@@ -82,8 +98,24 @@ func (g *Group) Get(key string) (ByteView, error) {
 	return g.load(key)
 }
 
-func (g *Group) load(key string) (ByteView, error) {
+func (g *Group) load(key string) (value ByteView, err error) {
+	if g.peerPicker != nil {
+		if peer, ok := g.peerPicker.PickPeer(key); ok {
+			if value, err = g.getFromPeer(peer, key); err == nil {
+				return value, err
+			}
+			log.Println("[GoCache] Failed to get from peer", err)
+		}
+	}
 	return g.getLocally(key)
+}
+
+func (g *Group) getFromPeer(peer *HTTPClient, key string) (ByteView, error) {
+	bytes, err := peer.Get(g.name, key)
+	if err != nil {
+		return ByteView{}, err
+	}
+	return ByteView{b: bytes}, nil
 }
 
 func (g *Group) getLocally(key string) (ByteView, error) {
