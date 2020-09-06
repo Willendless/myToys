@@ -2,6 +2,7 @@ package gocache
 
 import (
 	"fmt"
+	pb "gocache/gocachepb"
 	"gocache/singleflight"
 	"log"
 	"sync"
@@ -122,11 +123,16 @@ func (g *Group) load(key string) (ByteView, error) {
 }
 
 func (g *Group) getFromPeer(peer *HTTPClient, key string) (ByteView, error) {
-	bytes, err := peer.Get(g.name, key)
+	request := &pb.Request{
+		Group: g.name,
+		Key:   key,
+	}
+	response := &pb.Response{}
+	err := peer.Get(request, response)
 	if err != nil {
 		return ByteView{}, err
 	}
-	return ByteView{b: bytes}, nil
+	return ByteView{b: response.GetValue()}, nil
 }
 
 func (g *Group) getLocally(key string) (ByteView, error) {

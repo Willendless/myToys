@@ -104,3 +104,17 @@ func (p *HTTPPool) Log(format string, v ...interface{}) {
 
 ### 2.3. Github 标题
 ```
+
+### 配置protobuf
+
+1. 下载https://github.com/protocolbuffers/protobuf/releases发布版
+2. `sudo 7z x pro... -o/usr/local`解压
+3. 安装`protoc-gen-go`以将`.proto`文件转换为golang文件
+    + `go get -u github.com/golang/protobuf/protoc-gen-go`
+    + 将自动安装到`$GOPATH/bin`目录下
+    + 环境变量中加入`$(go env GOPATH)/bin`
+
+### protobuf使用
+
+1. 定义message
+2. 定义service

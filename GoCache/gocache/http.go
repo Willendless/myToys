@@ -3,12 +3,15 @@ package gocache
 import (
 	"fmt"
 	"gocache/consistenthash"
+	pb "gocache/gocachepb"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
 	"strings"
 	"sync"
+
+	"github.com/golang/protobuf/proto"
 )
 
 const defaultBasePath = "/_gocache/"
@@ -74,8 +77,13 @@ func (p *HTTPPool) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	body, err := proto.Marshal(&pb.Response{Value: view.ByteSlice()})
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	w.Header().Set("Content-Type", "application/octet-stream")
-	w.Write(view.ByteSlice())
+	w.Write(body)
 }
 
 //
@@ -114,27 +122,32 @@ type HTTPClient struct {
 //
 // Get send a get request to get cache data
 //
-func (c *HTTPClient) Get(group string, key string) ([]byte, error) {
+func (c *HTTPClient) Get(in *pb.Request, out *pb.Response) error {
 	u := fmt.Sprintf(
 		"%v%v/%v",
 		c.baseURL,
-		url.QueryEscape(group),
-		url.QueryEscape(key),
+		url.QueryEscape(in.GetGroup()),
+		url.QueryEscape(in.GetKey()),
 	)
 	res, err := http.Get(u)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("server returned: %v", res.Status)
+		return fmt.Errorf("server returned: %v", res.Status)
 	}
 
-	bytes, err := ioutil.ReadAll(res.Body)
+	body, err := ioutil.ReadAll(res.Body)
+
 	if err != nil {
-		return nil, fmt.Errorf("reading response body: %v", err)
+		return fmt.Errorf("Failed to read response body: %v", err)
 	}
 
-	return bytes, nil
+	if err = proto.Unmarshal(body, out); err != nil {
+		return fmt.Errorf("Failed to unmarshal response body: %v", err)
+	}
+
+	return nil
 }
