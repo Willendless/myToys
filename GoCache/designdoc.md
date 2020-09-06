@@ -1,5 +1,15 @@
 # Design Document
 
+## MENU
+
+- [part1: 双链表实现lru cache](#part-1-双链表实现lru-cache)
+- [part2: 线程安全lru cache](#part-2-线程安全lru-cache)
+- [part3: http服务端](#part-3-http服务端)
+- [part4: 一致性哈希](#part-4-一致性哈希)
+- [part5: 分布式节点](#part-5-分布式节点)
+- [part6: 防止缓存击穿](#part-6-防止缓存击穿)
+- [part7: 使用Protobuf通信](#part-7-使用protobuf通信)
+
 ## PART 1 双链表实现LRU CACHE
 
 ### 数据结构
@@ -258,4 +268,7 @@ func (g *Group) Do(key string, fn func() (interface{}, error)) (interface{}, err
 	+ 获取锁，再删除call实例
 4. 若有，则在`wg`上`wait`直到完成。并获取请求的结果，释放mutex锁
 
-## PART 7 使用Protobuf
+## PART 7 使用Protobuf通信
+
++ 使用protobuf配置http get请求的格式
++ 发送http请求和返回http结果前使用`marshal`和`unmarshal`封装通信数据
