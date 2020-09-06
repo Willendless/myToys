@@ -183,12 +183,79 @@ type HashRing struct {
 ### 数据结构
 
 ```go
+type HTTPPool struct {
+	self        string // base url, e.g. "https://example.net:8000"
+	basePath    string // default: '/_gocache'
+	mu          sync.Mutex
+	peers       *consistenthash.HashRing
+	HTTPClients map[string]*HTTPClient
+}
+
 type httpClient struct {
 	baseURL string
 }
 ```
 
+### 算法
+
+1. 整体流程
+	+ api服务器是某个peer服务器的goroutine
+	+ 发送http请求给api服务器
+	+ api服务器调用`group`的`get`方法尝试查询数据值
+	+ 若存储在远程节点，通过当前`group`中的`PeerPicker`获取到数据存储节点`HTTPClient`
+	+ 发送http的get请求给远程服务器
 
 ## PART 6 防止缓存击穿
+
++ 实现singleflight，对并发请求只做一次查询操作
+
+### 数据结构
+
+```go
+type call struct {
+	wg  sync.WaitGroup
+	val interface{}
+	err error
+}
+```
+
++ 抽象一次调用请求
+
+```go
+type Group struct {
+	mu sync.Mutex
+	m  map[string]*call
+}
+```
+
++ 修改`Group`，并发请求时只需要一次调用
+
+```go
+type Group struct {
+	name       string
+	getter     Getter
+	mainCache  cache
+	peerPicker PeerPicker
+	// use loader to guarantee key only fetched once
+	loader *singleflight.Group
+}
+```
+
++ 在`Group`的`load()`方法上使用`loader`，避免同时多次访问db或远程节点
+
+### 算法
+
+```go
+func (g *Group) Do(key string, fn func() (interface{}, error)) (interface{}, error)
+```
+
+1. 通过singleflight发起请求
+2. 首先获取mutex锁，并在`Group`查找当前是否有请求的缓存结果
+3. 若没有。
+	+ 则创建call实例，加入map中
+	+ wg+1, 释放锁
+	+ 执行回调函数，得到结果值，设置call实例`Done()`
+	+ 获取锁，再删除call实例
+4. 若有，则在`wg`上`wait`直到完成。并获取请求的结果，释放mutex锁
 
 ## PART 7 使用Protobuf

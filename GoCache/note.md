@@ -53,6 +53,17 @@ func (p *HTTPPool) Log(format string, v ...interface{}) {
 + 如果均为false则返回第一个参数
 + `sourt.Search(len(data), func(i int) bool { return data[i] >= x })`
 
+### 条件变量和waitgroup的区别
+
++ *是否有内部状态*: 条件变量没有状态，waitgroup需要等待的数量即是状态
++ *是否有后效性*: 条件变量没有后效性，每一次`wait()`都需要之后的`broadcast`或`signal`来唤醒。而`waitgroup`在全部`done()`后发生的`wait()`不需要等待。
+
+### map的delete函数
+
++ 删除后，内存并不释放，只设置一个empty标记
++ 保证能够在遍历map的同时删除元素
++ 真正释放内存需要`map = nil`
+
 ## 其它
 
 ### 查看端口使用情况并删除占用的进程
