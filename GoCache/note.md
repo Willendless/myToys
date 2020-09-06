@@ -83,4 +83,24 @@ func (p *HTTPPool) Log(format string, v ...interface{}) {
 4. 整个文件替换`1,$s/old/new/g`
     + `%`等价于`1, $`
     + `%s/old/new/g`
+
+
+### markdown内部锚点
+
++ 标题的大写字母转换为小写
++ 空格转换为`-`代替
++ 多级序号去除`.`
+
+```
+[Github标题1](#github标题1)
+
+### Github标题1
+
+[Github 标题2 Test](#github-标题2-test)
+
+### Github 标题2 Test
+
+[2.3. Github 标题](#23-github-标题)
+
+### 2.3. Github 标题
 ```
